@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "linux_parser.h"
 #include "process.h"
 
 using std::string;
@@ -12,6 +13,9 @@ using std::vector;
 
 void Process::Update() {
   // TODO
+  command_ = LinuxParser::Command(pid_);
+  user_ = LinuxParser::User(pid_);
+  ram_ = LinuxParser::Ram(pid_);
 }
 
 // TODO: Return this process's ID
