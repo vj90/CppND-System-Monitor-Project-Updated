@@ -4,12 +4,14 @@
 #include <string>
 #include <vector>
 
+#include "linux_parser.h"
 #include "process.h"
 #include "processor.h"
 
 class System {
  public:
-  System();
+  System()
+      : kernel_(LinuxParser::Kernel()), os_(LinuxParser::OperatingSystem()) {}
   Processor& Cpu();
   std::vector<Process>& Processes();
   float MemoryUtilization();

@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "linux_parser.h"
 #include "process.h"
 #include "processor.h"
 #include "system.h"
@@ -13,11 +12,6 @@ using std::set;
 using std::size_t;
 using std::string;
 using std::vector;
-
-System::System() {
-  os_ = LinuxParser::OperatingSystem();
-  kernel_ = LinuxParser::Kernel();
-}
 
 // TODO: Return the system's CPU
 /// some complex calculation
