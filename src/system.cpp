@@ -31,10 +31,7 @@ vector<Process>& System::Processes() { return processes_; }
 const std::string& System::Kernel() const { return kernel_; }
 
 // Return the system's memory utilization
-float System::MemoryUtilization() {
-  /// TODO where should this be done?
-  return LinuxParser::MemoryUtilization();
-}
+float System::MemoryUtilization() { return LinuxParser::MemoryUtilization(); }
 
 // Return the operating system name
 const std::string& System::OperatingSystem() const { return os_; }
