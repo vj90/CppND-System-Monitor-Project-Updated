@@ -14,12 +14,24 @@ using std::string;
 using std::vector;
 
 // TODO: Return the system's CPU
-/// some complex calculation
+/// TODO some complex calculation
 Processor& System::Cpu() { return cpu_; }
 
-// TODO: Return a container composed of the system's processes
-/// still need to read this stuff
-vector<Process>& System::Processes() { return processes_; }
+// Return a container composed of the system's processes
+vector<Process>& System::Processes() {
+  processes_.clear();
+  auto pid_list = LinuxParser::Pids();
+  processes_.reserve(pid_list.size());
+
+  for (std::size_t i = 0; i < pid_list.size(); ++i) {
+    processes_.push_back(Process(pid_list[i]));
+    processes_.back().Update();
+  }
+
+  std::sort(processes_.begin(), processes_.end());
+
+  return processes_;
+}
 
 // Return the system's kernel identifier (string)
 const std::string& System::Kernel() const { return kernel_; }
