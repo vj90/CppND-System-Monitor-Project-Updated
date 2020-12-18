@@ -180,7 +180,8 @@ string LinuxParser::Command(int pid) {
 }
 
 string LinuxParser::Ram(int pid) {
-  string field, ram;
+  string field;
+  float ram{0.0};
   string PID = to_string(pid);
   std::ifstream status_file(kProcDirectory + PID + kStatusFilename);
   if (status_file.is_open()) {
@@ -189,12 +190,15 @@ string LinuxParser::Ram(int pid) {
       std::istringstream linestream(line);
       if (linestream >> field >> ram) {
         if (field == "VmSize:") {
+          ram = ram / 1000; // convert to MB
           break;
         }
       }
     }
   }
-  return ram;
+  std::ostringstream os;
+  os << ram;
+  return os.str();
 }
 
 string LinuxParser::Uid(int pid) {
