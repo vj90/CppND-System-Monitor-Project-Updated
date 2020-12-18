@@ -116,10 +116,40 @@ long LinuxParser::UpTime() {
 }
 
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+LinuxParser::SystemJiffies LinuxParser::Jiffies() {
+  SystemJiffies jiffies;
+  std::ifstream stat_file(kProcDirectory + kStatFilename);
+  string field;
+  if (stat_file.is_open()) {
+    string line;
+    while (std::getline(stat_file, line)) {
+      std::istringstream linestream(line);
+      if (linestream >> field && field == "cpu") {
+        for (int i = 0; i < CPUStates::kCount_; ++i) {
+          long current_jiffies;
+          if (linestream >> current_jiffies) {
+            switch (i) {
+              case CPUStates::kUser_:
+              case CPUStates::kNice_:
+              case CPUStates::kIRQ_:
+              case CPUStates::kSoftIRQ_:
+              case CPUStates::kSteal_:
+                jiffies.active += current_jiffies;
+                break;
+              default:
+                jiffies.inactive += current_jiffies;
+            }
+          }
+        }
+        break;
+      }
+    }
+  }
+  return jiffies;
+}
 
 // TODO: Read and return the number of active jiffies for a PID
-// REMOVE:  once you define the function
+
 long LinuxParser::ActiveJiffies(int pid) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system

@@ -38,10 +38,16 @@ enum CPUStates {
   kSoftIRQ_,
   kSteal_,
   kGuest_,
-  kGuestNice_
+  kGuestNice_,
+  kCount_
 };
 std::vector<std::string> CpuUtilization();
-long Jiffies();
+
+struct SystemJiffies {
+  long active{0};
+  long inactive{0};
+};
+SystemJiffies Jiffies();
 long ActiveJiffies();
 long ActiveJiffies(int pid);
 long IdleJiffies();
