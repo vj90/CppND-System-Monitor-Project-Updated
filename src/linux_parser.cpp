@@ -220,7 +220,7 @@ string LinuxParser::Ram(int pid) {
       std::istringstream linestream(line);
       if (linestream >> field >> ram) {
         if (field == "VmSize:") {
-          ram = ram / 1000; // convert to MB
+          ram = ram / 1000;  // convert to MB
           break;
         }
       }
@@ -270,5 +270,5 @@ string LinuxParser::User(int pid) {
 }
 
 // TODO: Read and return the uptime of a process
-// REMOVE:  once you define the function
+
 long LinuxParser::UpTime(int pid) { return 0; }
