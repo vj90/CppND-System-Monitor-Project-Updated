@@ -48,4 +48,4 @@ string Process::User() { return user_; }
 long int Process::UpTime() { return uptime_; }
 
 // TODO: Overload the "less than" comparison operator for Process objects
-bool Process::operator<(Process const& a) const { return this->pid_ > a.pid_; }
+bool Process::operator<(Process const& a) const { return this->cpu_ > a.cpu_; }
