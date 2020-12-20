@@ -227,9 +227,7 @@ string LinuxParser::Ram(const int pid) {
   LinuxParser::ReadFieldValueFromFile(kProcDirectory + PID + kStatusFilename,
                                       "VmSize:", ram);
   ram = ram / 1000;  // convert to MB
-  std::ostringstream os;
-  os << ram;
-  return os.str();
+  return to_string(ram);
 }
 
 // Read and return the UID of a process
@@ -259,7 +257,7 @@ string LinuxParser::User(const int pid) {
       }
     }
   }
-  return user;
+  return user.substr(0,6);
 }
 
 // Read and return the uptime of a process
