@@ -10,7 +10,7 @@ It contains relevant attributes as shown below
 */
 class Process : private Processor {
  public:
-  Process(int pid) : pid_(pid) {}
+  Process(int pid) : pid_(pid) { Update(); }
   void Update();
   int Pid();
   std::string User();

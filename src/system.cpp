@@ -25,7 +25,6 @@ vector<Process>& System::Processes() {
 
   for (std::size_t i = 0; i < pid_list.size(); ++i) {
     processes_.push_back(Process(pid_list[i]));
-    processes_.back().Update();
   }
 
   std::sort(processes_.begin(), processes_.end());
