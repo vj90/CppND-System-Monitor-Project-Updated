@@ -195,42 +195,21 @@ vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
-  std::ifstream stat_file(kProcDirectory + kStatFilename);
-  string field;
-  int total_processes;
-  if (stat_file.is_open()) {
-    string line;
-    while (std::getline(stat_file, line)) {
-      std::istringstream linestream(line);
-      if (linestream >> field >> total_processes) {
-        if (field == "processes") {
-          break;
-        }
-      }
-    }
-  }
+  int total_processes(0);
+  LinuxParser::ReadFieldValueFromFile(kProcDirectory + kStatFilename,
+                                      "processes", total_processes);
   return total_processes;
 }
 
 // Read and return the number of running processes
 int LinuxParser::RunningProcesses() {
-  std::ifstream stat_file(kProcDirectory + kStatFilename);
-  string field;
-  int running_processes;
-  if (stat_file.is_open()) {
-    string line;
-    while (std::getline(stat_file, line)) {
-      std::istringstream linestream(line);
-      if (linestream >> field >> running_processes) {
-        if (field == "procs_running") {
-          break;
-        }
-      }
-    }
-  }
+  int running_processes(0);
+  LinuxParser::ReadFieldValueFromFile(kProcDirectory + kStatFilename,
+                                      "procs_running", running_processes);
   return running_processes;
 }
 
+// Read and return the command of running processes
 string LinuxParser::Command(const int pid) {
   string command;
   string PID = to_string(pid);
@@ -243,22 +222,11 @@ string LinuxParser::Command(const int pid) {
 
 // Read and return the ram of a PID
 string LinuxParser::Ram(const int pid) {
-  string field;
   float ram{0.0};
   string PID = to_string(pid);
-  std::ifstream status_file(kProcDirectory + PID + kStatusFilename);
-  if (status_file.is_open()) {
-    string line;
-    while (std::getline(status_file, line)) {
-      std::istringstream linestream(line);
-      if (linestream >> field >> ram) {
-        if (field == "VmSize:") {
-          ram = ram / 1000;  // convert to MB
-          break;
-        }
-      }
-    }
-  }
+  LinuxParser::ReadFieldValueFromFile(kProcDirectory + PID + kStatusFilename,
+                                      "VmSize:", ram);
+  ram = ram / 1000;  // convert to MB
   std::ostringstream os;
   os << ram;
   return os.str();
@@ -266,20 +234,10 @@ string LinuxParser::Ram(const int pid) {
 
 // Read and return the UID of a process
 string LinuxParser::Uid(const int pid) {
-  string uid, field;
   string PID = to_string(pid);
-  std::ifstream status_file(kProcDirectory + PID + kStatusFilename);
-  if (status_file.is_open()) {
-    string line;
-    while (std::getline(status_file, line)) {
-      std::istringstream linestream(line);
-      if (linestream >> field >> uid) {
-        if (field == "uid:") {
-          break;
-        }
-      }
-    }
-  }
+  string uid;
+  LinuxParser::ReadFieldValueFromFile(kProcDirectory + PID + kStatusFilename,
+                                      "uid:", uid);
   return uid;
 }
 
@@ -307,3 +265,22 @@ string LinuxParser::User(const int pid) {
 // Read and return the uptime of a process
 long LinuxParser::UpTime(const int pid[[maybe_unused]]) { return 0; }
 
+// Helper function for parsing a value from a file
+template <typename T>
+void LinuxParser::ReadFieldValueFromFile(const std::string& file_path,
+                                         const std::string& field, T& value) {
+  // T value;
+  std::ifstream file(file_path);
+  if (file.is_open()) {
+    string line;
+    while (std::getline(file, line)) {
+      std::istringstream linestream(line);
+      string current_field;
+      if (linestream >> current_field >> value) {
+        if (current_field == field) {
+          return;
+        }
+      }
+    }
+  }
+}

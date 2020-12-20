@@ -67,6 +67,10 @@ enum ProcStatus {
   kStartTime_ = 21
 };
 
+// Parsing helper
+template <typename T>
+void ReadFieldValueFromFile(const std::string& file_path,
+                            const std::string& field, T& value);
 };  // namespace LinuxParser
 
 #endif
