@@ -222,7 +222,7 @@ string LinuxParser::Command(const int pid) {
 
 // Read and return the ram of a PID
 string LinuxParser::Ram(const int pid) {
-  float ram{0.0};
+  long ram{0};
   string PID = to_string(pid);
   LinuxParser::ReadFieldValueFromFile(kProcDirectory + PID + kStatusFilename,
                                       "VmSize:", ram);
