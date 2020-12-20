@@ -16,13 +16,24 @@ void Process::Update() {
   command_ = LinuxParser::Command(pid_);
   user_ = LinuxParser::User(pid_);
   ram_ = LinuxParser::Ram(pid_);
+  cpu_ = Utilization();
 }
 
 // TODO: Return this process's ID
 int Process::Pid() { return pid_; }
 
 // TODO: Return this process's CPU utilization
+float Process::Utilization() {
+  UpdateJiffies();
+  return CalculateUtilization();
+}
+
 float Process::CpuUtilization() { return cpu_; }
+
+// Read the current jiffies
+void Process::UpdateJiffies() {
+  current_jiffies_ = LinuxParser::Jiffies(pid_, uptime_);
+}
 
 // TODO: Return the command that generated this process
 string Process::Command() { return command_; }
