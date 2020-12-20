@@ -7,8 +7,13 @@ class Processor {
  public:
   float Utilization();
 
- private:
+ protected:
   LinuxParser::SystemJiffies prev_jiffies_;
+  LinuxParser::SystemJiffies current_jiffies_;
+  float CalculateUtilization();
+
+ private:
+  void UpdateJiffies();
 };
 
 #endif

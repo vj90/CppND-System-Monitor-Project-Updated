@@ -2,11 +2,13 @@
 #define PROCESS_H
 
 #include <string>
+
+#include "processor.h"
 /*
 Basic class for Process representation
 It contains relevant attributes as shown below
 */
-class Process {
+class Process : private Processor {
  public:
   Process(int pid) : pid_(pid) {}
   void Update();
@@ -25,6 +27,8 @@ class Process {
   float cpu_{0.0};
   std::string ram_{"Not set"};
   long int uptime_{0};
+  void UpdateJiffies();
+  float Utilization();
 };
 
 #endif

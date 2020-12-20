@@ -38,26 +38,35 @@ enum CPUStates {
   kSoftIRQ_,
   kSteal_,
   kGuest_,
-  kGuestNice_,
-  kCount_
+  kGuestNice_
 };
+
 std::vector<std::string> CpuUtilization();
 
 struct SystemJiffies {
   long active{0};
-  long inactive{0};
+  long total{0};
 };
 SystemJiffies Jiffies();
 long ActiveJiffies();
-long ActiveJiffies(int pid);
+SystemJiffies Jiffies(const int pid, long& uptime);
 long IdleJiffies();
 
 // Processes
-std::string Command(int pid);
-std::string Ram(int pid);
-std::string Uid(int pid);
-std::string User(int pid);
-long int UpTime(int pid);
+std::string Command(const int pid);
+std::string Ram(const int pid);
+std::string Uid(const int pid);
+std::string User(const int pid);
+long int UpTime(const int pid);
+
+enum ProcStatus {
+  kUTime_ = 13,
+  kSTime_ = 14,
+  kCUtime_ = 15,
+  kCSTime_ = 16,
+  kStartTime_ = 21
+};
+
 };  // namespace LinuxParser
 
 #endif
