@@ -184,15 +184,6 @@ LinuxParser::SystemJiffies LinuxParser::Jiffies(const int pid, long& uptime) {
   return current_jiffies;
 }
 
-// Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
-
-// Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
-
-// Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
-
 // Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
   int total_processes(0);
@@ -259,9 +250,6 @@ string LinuxParser::User(const int pid) {
   }
   return user.substr(0, 6);
 }
-
-// Read and return the uptime of a process
-long LinuxParser::UpTime(const int pid[[maybe_unused]]) { return 0; }
 
 // Helper function for parsing a value from a file
 template <typename T>

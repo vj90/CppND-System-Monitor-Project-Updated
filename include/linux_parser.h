@@ -41,23 +41,18 @@ enum CPUStates {
   kGuestNice_
 };
 
-std::vector<std::string> CpuUtilization();
-
 struct SystemJiffies {
   long active{0};
   long total{0};
 };
 SystemJiffies Jiffies();
-long ActiveJiffies();
 SystemJiffies Jiffies(const int pid, long& uptime);
-long IdleJiffies();
 
 // Processes
 std::string Command(const int pid);
 std::string Ram(const int pid);
 std::string Uid(const int pid);
 std::string User(const int pid);
-long int UpTime(const int pid);
 
 enum ProcStatus {
   kUTime_ = 13,
